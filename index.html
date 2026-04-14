@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Favorite Person ❤️</title>
+
+<style>
+:root {
+    --primary-pink: #ffafbd;
+    --dark-pink: #ff8e91;
+}
+
+body {
+    background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(20px);}
+    to {opacity:1; transform:translateY(0);}
+}
+
+/* GALLERY */
+.gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.08);
+}
+
+/* LIGHTBOX */
+#lightbox {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+}
+
+#lightbox img {
+    max-width:90%;
+    max-height:90%;
+    border-radius:15px;
+}
+
+.nav {
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:40px;
+    color:white;
+    cursor:pointer;
+}
+
+.prev { left:20px; }
+.next { right:20px; }
+
+/* MUSIC */
+.music-section {
+    margin-top: 20px;
+}
+
+.song-link {
+    display: block;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #ff8e91;
+    border: 1px solid #ffafbd;
+}
+
+.song-link:hover {
+    background: #ffafbd;
+    color: white;
+}
+
+/* BUTTON */
+button {
+    background: var(--dark-pink);
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+#secret {
+    display:none;
+    margin-top:10px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Hi efuye gela! ❤️</h1>
+    <p>I made this just to remind you how much you mean to me.</p>
+
+    <!-- GALLERY -->
+    <div class="gallery">
+        <img src="images/efr1.jpg" onclick="openLightbox(0)">
+        <img src="images/efr2.jpg" onclick="openLightbox(1)">
+        <img src="images/efr3.jpg" onclick="openLightbox(2)">
+        <img src="images/efr4.jpg" onclick="openLightbox(3)">
+        <img src="images/efr5.jpg" onclick="openLightbox(4)">
+    </div>
+
+    <!-- MUSIC -->
+    <div class="music-section">
+        <h3>Songs that remind me of you:</h3>
+        <a href="https://youtu.be/JJqhh-WE62Q" target="_blank" class="song-link">🎵 Our Favorite Song</a>
+        <a href="https://youtu.be/faXPu5_Y3Cs" target="_blank" class="song-link">✨ Reminds me of you</a>
+        <a href="https://youtu.be/CsMEgGdN59Y" target="_blank" class="song-link">🌙 Relax & think of me</a>
+    </div>
+
+    <!-- MESSAGE -->
+    <p id="typing"></p>
+
+    <button onclick="showLove()">Click me 💌</button>
+    <p id="secret">atmechignm getaba❤️</p>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+    <span class="nav prev" onclick="changeImage(-1)">❮</span>
+    <img id="lightbox-img">
+    <span class="nav next" onclick="changeImage(1)">❯</span>
+</div>
+
+<script>
+// IMAGES
+const images = [
+    "images/efr1.jpg",
+    "images/efr2.jpg",
+    "images/efr3.jpg",
+    "images/efr4.jpg",
+    "images/efr5.jpg"
+];
+
+let currentIndex = 0;
+
+// OPEN
+function openLightbox(index){
+    currentIndex = index;
+    document.getElementById("lightbox").style.display="flex";
+    showImage();
+}
+
+// SHOW
+function showImage(){
+    document.getElementById("lightbox-img").src = images[currentIndex];
+}
+
+// NEXT/PREV
+function changeImage(dir){
+    currentIndex += dir;
+    if(currentIndex < 0) currentIndex = images.length-1;
+    if(currentIndex >= images.length) currentIndex = 0;
+    showImage();
+}
+
+// CLOSE
+document.getElementById("lightbox").onclick = function(e){
+    if(e.target.id === "lightbox"){
+        this.style.display="none";
+    }
+};
+
+// SWIPE
+let startX = 0;
+
+lightbox.addEventListener("touchstart", e=>{
+    startX = e.touches[0].clientX;
+});
+
+lightbox.addEventListener("touchend", e=>{
+    let endX = e.changedTouches[0].clientX;
+
+    if(startX - endX > 50) changeImage(1);
+    if(endX - startX > 50) changeImage(-1);
+});
+
+// KEYBOARD
+document.addEventListener("keydown", e=>{
+    if(e.key === "ArrowRight") changeImage(1);
+    if(e.key === "ArrowLeft") changeImage(-1);
+});
+
+// TYPING
+const text = "You're doing amazing, and I'm always in your corner ❤️";
+let i = 0;
+
+function typeWriter(){
+    if(i < text.length){
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 40);
+    }
+}
+typeWriter();
+
+// SECRET
+function showLove(){
+    document.getElementById("secret").style.display="block";
+}
+</script>
+
+</body>
+</html>
